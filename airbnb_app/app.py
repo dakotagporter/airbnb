@@ -3,6 +3,7 @@
 from os import getenv
 from flask import Flask, request, render_template, redirect, url_for
 from flask_sqlalchemy import SQLAlchemy
+from werkzeug import secure_filename
 
 from .wrangler import wrangle_image
 
@@ -29,6 +30,10 @@ def create_app():
     def upload_post():
         if request.method == "POST":
             img = request.files["file"]
+            orig_dir = "images/original"+str(secure_filename(img.filename))
+            img.save(orig_dir)
+            new_dir = "images/resized/"
+            wrangle_image(orig_dir, new_dir)
 
         return redirect(url_for("prediction"))
 
