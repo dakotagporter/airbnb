@@ -5,14 +5,14 @@ name = "pypi"
 
 [packages]
 flask = "*"
-flask-sqlalchemy = "*"
-jinja2 = "*"
-python-dotenv = "*"
-numpy = "==1.19.3"
 flask-migrate = "*"
+flask-sqlalchemy = "*"
 gunicorn = "*"
 psycopg2 = "*"
+numpy = "==1.19.3"
+jinja2 = "*"
 scikit-image = "*"
+python-dotenv = "*"
 
 [dev-packages]
 
