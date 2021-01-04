@@ -28,7 +28,7 @@ def create_app():
     @app.route("/upload", methods=["POST"])
     def upload_post():
         if request.method == "POST":
-            img = request.files["image"]
+            img = request.files["file"]
 
         return redirect(url_for("prediction"))
 
