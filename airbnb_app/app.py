@@ -14,6 +14,8 @@ def create_app():
     """Construct app and it's routes."""
     app = Flask(__name__)
 
+    UPLOAD_FOLDER = "images/original/"
+    app.config["UPLOAD_FOLDER"] = UPLOAD_FOLDER
     app.config["SQLALCHEMY_DATABASE_URI"] = os.getenv("DATABASE_URL")
     app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
     DB.init_app(app)
@@ -30,11 +32,11 @@ def create_app():
     def upload_post():
         if request.method == "POST":
             img = request.files.get("file", False)
-            return img.filename
-            # orig_dir = os.path.join('images/original', str(secure_filename(img.filename)))
-            # img.save(orig_dir)
-            # new_dir = "images/resized/"
-            # wrangle_image(orig_dir, new_dir)
+            filename = secure_filename(img.filename)
+            orig_dir = os.path.join(app.config["UPLOAD_FOLDER"], str(filename))
+            img.save(orig_dir)
+            new_dir = "images/resized/"
+            wrangle_image(orig_dir, new_dir)
 
         return redirect(url_for("prediction"))
 
