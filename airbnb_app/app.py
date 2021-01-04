@@ -26,14 +26,15 @@ def create_app():
     def upload():
         return render_template("upload.html", title="Upload")
 
-    @app.route("/upload", methods=["POST"])
+    @app.route("/uploadgo", methods=["POST"])
     def upload_post():
         if request.method == "POST":
             img = request.files["file"]
-            orig_dir = os.path.join('images/original', str(secure_filename(img.filename)))
-            img.save(orig_dir)
-            new_dir = "images/resized/"
-            wrangle_image(orig_dir, new_dir)
+            return img.filename
+            # orig_dir = os.path.join('images/original', str(secure_filename(img.filename)))
+            # img.save(orig_dir)
+            # new_dir = "images/resized/"
+            # wrangle_image(orig_dir, new_dir)
 
         return redirect(url_for("prediction"))
 
