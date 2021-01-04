@@ -35,10 +35,8 @@ def create_app():
             # img.save(orig_dir)
             # new_dir = "images/resized/"
             # wrangle_image(orig_dir, new_dir)
-        else:
-            return 'go'
 
-        # return redirect(url_for("prediction"))
+        return redirect(url_for("prediction"))
 
     @app.route("/prediction")
     def prediction(results=None):
