@@ -5,17 +5,26 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Airbnb Prediction - {{ title }}</title>
+    <style media="screen">
+    h1 {
+          border-style: solid;
+          border-width: 6px;
+          border-left-width: 3px;
+          border-right-width: 3px;
+          border-color: gray;
+        }
+    </style>
+    <title>Airbnb Predictions - {{ title }}</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulmaswatch/0.8.1/lux/bulmaswatch.min.css" />
 </head>
 
 <body>
     <section class="hero is-primary is-fullheight">
-
+      <h1>
         <div class="hero-head">
             <nav class="navbar">
                 <a href="https://airbnb.com/" target="blank_">
-                  <img src="https://venturebeat.com/wp-content/uploads/2014/07/airbnb-logo-red.jpg?fit=800%2C450&strip=all" alt="Airbnb" width="200" height="112">
+                  <img src="https://venturebeat.com/wp-content/uploads/2014/07/airbnb-logo-red.jpg?fit=800%2C450&strip=all" alt="Airbnb" width="250" height="120">
                 </a>
                 <div class="container">
 
@@ -24,12 +33,18 @@
                             <a href="{{ url_for('root') }}" class="navbar-item">
                                 Home
                             </a>
+                            <a href="{{ url_for('prediction') }}" class="navbar-item">
+
+                            </a>
+                            <a href="{{ url_for('prediction') }}" class="navbar-item">
+                                Predictions
+                            </a>
                         </div>
                     </div>
                 </div>
             </nav>
         </div>
-
+      </h1>
         <div class="hero-body">
             <div class="container has-text-centered">
                {% block content %}

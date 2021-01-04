@@ -19,4 +19,14 @@ def create_app():
     def root():
         return render_template("base.html", title="Home")
 
+    @app.route("/prediction")
+    def prediction(results=None):
+        if results:
+            message = "congrats"
+        else:
+            message = "No results have been calculated yet!!"
+
+        return render_template("prediction.html", title="Prediction",
+                                   message=message)
+
     return app
