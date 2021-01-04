@@ -1,12 +1,22 @@
 {% extends "base.html" %}
 
 {% block content %}
-<form enctype='multipart/form-data' method="post" action="/upload">
-    <div class="field">
-        <div class="control">
-            <input class="input is-large" type="file" name="file" accept="image/png, image/jpeg" autofocus="">
-            <input type="submit" name="select_image">
-        </div>
-    </div>
-</form>
+<div class="box">
+  {% with messages = get_flashed_messages() %}
+  {% if messages %}
+  <div class="notification is-danger">
+    {{ messages[0] }}.
+  </div>
+  {% endif %}
+  {% endwith %}
+  <form enctype='multipart/form-data' method="post" action="/upload">
+      <div class="field">
+          <div class="control">
+              <input class="input is-large" type="file" name="file" accept="image/png, image/jpeg" autofocus="">
+          </div>
+      </div>
+
+      <button class="button is-block is-info is-large is-fullwidth">Get Estimate</button>
+  </form>
+</div>
 {% endblock %}
