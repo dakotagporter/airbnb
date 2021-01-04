@@ -48,6 +48,6 @@ def create_app():
             message = "No results have been calculated yet!!"
 
         return render_template("prediction.html", title="Prediction",
-                                   message=message)
+                               message=message)
 
     return app
