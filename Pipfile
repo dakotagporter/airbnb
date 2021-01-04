@@ -12,6 +12,7 @@ numpy = "==1.19.3"
 flask-migrate = "*"
 gunicorn = "*"
 psycopg2 = "*"
+scikit-image = "*"
 
 [dev-packages]
 
