@@ -26,7 +26,7 @@ def create_app():
     def upload():
         return render_template("upload.html", title="Upload")
 
-    @app.route("/uploadgo", methods=["POST"])
+    @app.route("/upload", methods=["POST"])
     def upload_post():
         if request.method == "POST":
             img = request.files["file"]
