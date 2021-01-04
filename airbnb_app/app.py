@@ -1,7 +1,7 @@
 """Main functions and routes for Airbnb app."""
 
 from os import getenv
-from flask import Flask, render_template
+from flask import Flask, request, render_template, redirect, url_for
 from flask_sqlalchemy import SQLAlchemy
 
 DB = SQLAlchemy()
@@ -18,6 +18,17 @@ def create_app():
     @app.route("/")
     def root():
         return render_template("base.html", title="Home")
+
+    @app.route("/upload")
+    def upload():
+        return render_template("upload.html", title="Upload")
+
+    @app.route("/upload", methods=["POST"])
+    def upload_post():
+        if request.method == "POST":
+            img = request.files["image"]
+
+        return redirect(url_for("prediction"))
 
     @app.route("/prediction")
     def prediction(results=None):
