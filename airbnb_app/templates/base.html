@@ -14,7 +14,7 @@
           border-color: gray;
         }
     </style>
-    <title>Airbnb Predictions - {{ title }}</title>
+    <title>AirBnBPredictions - {{ title }}</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulmaswatch/0.8.1/lux/bulmaswatch.min.css" />
 </head>
 
@@ -31,13 +31,13 @@
                     <div id="navbarMenuHeroA" class="navbar-menu">
                         <div class="navbar-end">
                             <a href="{{ url_for('root') }}" class="navbar-item">
-                                Home
+                              Home
                             </a>
                             <a href="{{ url_for('upload') }}" class="navbar-item">
                               Upload
                             </a>
                             <a href="{{ url_for('prediction') }}" class="navbar-item">
-                                Predictions
+                              Predictions
                             </a>
                         </div>
                     </div>
@@ -48,6 +48,7 @@
         <div class="hero-body">
             <div class="container has-text-centered">
                {% block content %}
+
                {% endblock %}
             </div>
         </div>
