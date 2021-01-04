@@ -29,14 +29,16 @@ def create_app():
     @app.route("/upload", methods=["POST"])
     def upload_post():
         if request.method == "POST":
-            img = request.files["image"]
-            return img
+            img = request.files.get("file", False)
+            return img.filename
             # orig_dir = os.path.join('images/original', str(secure_filename(img.filename)))
             # img.save(orig_dir)
             # new_dir = "images/resized/"
             # wrangle_image(orig_dir, new_dir)
+        else:
+            return 'go'
 
-        return redirect(url_for("prediction"))
+        # return redirect(url_for("prediction"))
 
     @app.route("/prediction")
     def prediction(results=None):

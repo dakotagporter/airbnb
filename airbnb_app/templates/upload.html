@@ -1,13 +1,12 @@
 {% extends "base.html" %}
 
 {% block content %}
-<form method="post" action="/upload">
+<form enctype='multipart/form-data' method="post" action="/upload">
     <div class="field">
         <div class="control">
             <input class="input is-large" type="file" name="image" accept="image/png, image/jpeg" autofocus="">
             <input type="submit" name="select_image">
         </div>
     </div>
-
 </form>
 {% endblock %}
