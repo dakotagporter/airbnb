@@ -29,8 +29,8 @@ def create_app():
     @app.route("/upload", methods=["POST"])
     def upload_post():
         if request.method == "POST":
-            img = request.files["file"]
-            return img.filename
+            img = request.files["image"]
+            return img
             # orig_dir = os.path.join('images/original', str(secure_filename(img.filename)))
             # img.save(orig_dir)
             # new_dir = "images/resized/"
