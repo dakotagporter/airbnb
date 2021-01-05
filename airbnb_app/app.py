@@ -47,7 +47,7 @@ def create_app():
                 new_dir = "images/resized/"
 
                 filesystem_test = ''
-                for file in os.scandir(app.config['UPLOAD_FOLDER']):
+                for file in os.scandir('images/resized'):
                     filesystem_test = filesystem_test + file.name
                 return filesystem_test
 
