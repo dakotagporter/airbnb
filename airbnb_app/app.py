@@ -5,7 +5,8 @@ from flask import Flask, request, render_template, redirect, url_for, flash
 from flask_sqlalchemy import SQLAlchemy
 from werkzeug.utils import secure_filename
 
-from .wrangler import wrangle_image
+from .wrangler import wrangle_image, predict
+from .stuff import AMENITIES
 from .models import UserInput
 
 DB = SQLAlchemy()
@@ -29,57 +30,6 @@ def create_app():
 
     @app.route("/upload")
     def upload():
-        AMENITIES = ['Wifi',
-                     'Smoke alarm',
-                     'Essentials',
-                     'Heating',
-                     'Air conditioning',
-                     'Kitchen',
-                     'Hangers',
-                     'TV',
-                     'Iron',
-                     'Washer',
-                     'Dryer',
-                     'Shampoo',
-                     'Carbon monoxide alarm',
-                     'Hair dryer',
-                     'Laptop-friendly workspace',
-                     'Hot water',
-                     'Fire extinguisher',
-                     'Refrigerator',
-                     'Microwave',
-                     'Dishes and silverware',
-                     'Coffee maker',
-                     'Private entrance',
-                     'Oven',
-                     'Stove',
-                     'Bed linens',
-                     'Cooking basics',
-                     'First aid kit',
-                     'Free street parking',
-                     'Dishwasher',
-                     'Extra pillows and blankets',
-                     'Long term stays allowed',
-                     'Cable TV',
-                     'Free parking on premises',
-                     'Patio or balcony',
-                     'Luggage dropoff allowed',
-                     'Lockbox',
-                     'Garden or backyard',
-                     'Keypad',
-                     'Elevator',
-                     'Gym',
-                     'Lock on bedroom door',
-                     'Bathtub',
-                     'BBQ grill',
-                     'Indoor fireplace',
-                     'Breakfast',
-                     'Shower gel',
-                     'Paid parking on premises',
-                     'Paid parking off premises',
-                     'Pool',
-                     'Pack \'n Play/travel crib']
-
         return render_template("upload.html", title="Upload",
                                amenities=AMENITIES)
 
