@@ -2,15 +2,11 @@
 
 import os
 from flask import Flask, request, render_template, redirect, url_for, flash
-from flask_sqlalchemy import SQLAlchemy
 from werkzeug.utils import secure_filename
 
 from .wrangler import wrangle_image, predict
 from .stuff import AMENITIES
-from .models import UserInput
-
-DB = SQLAlchemy()
-USERDB = SQLAlchemy()
+from .models import DB, UserInput
 
 
 def create_app():
@@ -20,7 +16,7 @@ def create_app():
     UPLOAD_FOLDER = "images/original/"
     app.config["UPLOAD_FOLDER"] = UPLOAD_FOLDER
     app.config["SECRET_KEY"] = 'secret-key-goes-here'
-    app.config["SQLALCHEMY_DATABASE_URI"] = os.getenv("DATABASE_URL")
+    app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///db.sqlite3"
     app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
     DB.init_app(app)
 
@@ -52,11 +48,12 @@ def create_app():
                 filename = secure_filename(img.filename)
                 orig_dir = os.path.join(app.config["UPLOAD_FOLDER"],
                                         str(filename))
-                img.save(orig_dir)
                 new_dir = "images/resized/"
-                new_name, image = wrangle_image(orig_dir, new_dir)
+                img.save(orig_dir)
 
-            new_input = UserInput(amens, path)
+                path = wrangle_image(orig_dir, new_dir)
+
+            new_input = UserInput(amenities=amens, image=path)
             os.remove(path)
 
             DB.session.add(new_input)
@@ -67,7 +64,7 @@ def create_app():
     @app.route("/estimate")
     def estimate(results=None):
         if results:
-            amenities = UserInput.query.filter_by(id=id)
+            amenities = UserInput.query.all()
             message = f"Your amenities: {amenities}"
         else:
             message = "No results have been calculated yet!!"

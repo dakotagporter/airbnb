@@ -1,6 +1,7 @@
 """Configure databases for AirBnB app."""
+from flask_sqlalchemy import SQLAlchemy
 
-from .app import DB
+DB = SQLAlchemy()
 
 
 class UserInput(DB.Model):
