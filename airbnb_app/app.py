@@ -79,7 +79,7 @@ def create_app():
                      'Pool',
                      'Pack \'n Play/travel crib']
 
-        return render_template("upload.html", title="Upload"
+        return render_template("upload.html", title="Upload",
                                amenities=AMENITIES)
 
     @app.route("/upload", methods=["POST"])
@@ -89,6 +89,9 @@ def create_app():
         """
         if request.method == "POST":
             amens = request.form["amenities"]
+            if not amens:
+                flash("Select at least one amenity")
+                return redirect(url_for("upload"))
 
             img = request.files.get("file", False)
             if not img:
