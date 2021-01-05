@@ -6,11 +6,11 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <style media="screen">
-    h1 {
-          border-style: solid;
+    nav {
+          border-bottom-style: solid;
           border-width: 6px;
-          border-left-width: 3px;
-          border-right-width: 3px;
+          border-left-width: 0px;
+          border-right-width: 0px;
           border-color: gray;
         }
     </style>
@@ -20,15 +20,13 @@
 
 <body>
     <section class="hero is-primary is-fullheight">
-      <h1>
         <div class="hero-head">
             <nav class="navbar">
-                <a href="https://airbnb.com/" target="blank_">
-                  <img src="https://venturebeat.com/wp-content/uploads/2014/07/airbnb-logo-red.jpg?fit=800%2C450&strip=all" alt="Airbnb" width="250" height="120">
-                </a>
                 <div class="container">
-
                     <div id="navbarMenuHeroA" class="navbar-menu">
+                        <a href="https://airbnb.com/" target="blank_">
+                          <img src="https://venturebeat.com/wp-content/uploads/2014/07/airbnb-logo-red.jpg?fit=800%2C450&strip=all" alt="AirBnB" width="200" height="112">
+                        </a>
                         <div class="navbar-end">
                             <a href="{{ url_for('root') }}" class="navbar-item">
                               Home
@@ -44,11 +42,16 @@
                 </div>
             </nav>
         </div>
-      </h1>
+
         <div class="hero-body">
             <div class="container has-text-centered">
                {% block content %}
-
+               <big>
+                AirBnB is the "B"read and "B"utter of the travel industry. Many people discover their second income through renting out one of
+                their own properties. Using historical data from our good friends at AirBnB, we can get you started on this path to glory with just
+                a few pieces of information on your property of interest.<br/>
+              </big>
+               <img src="https://media.cntraveler.com/photos/5fad3ff8127cb0af541a0235/3:1/w_6000,h_2000,c_limit/HolidayTravel-2020-GettyImages-1016227458.jpg" alt="Travel" width="6000" height="2000">
                {% endblock %}
             </div>
         </div>
