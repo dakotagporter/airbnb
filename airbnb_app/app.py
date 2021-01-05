@@ -45,6 +45,8 @@ def create_app():
                                         str(filename))
                 img.save(orig_dir)
                 new_dir = "images/resized/"
+
+                ##### TODO -- wrangler now returns new image name, to save in database.
                 wrangle_image(orig_dir, new_dir)
 
         return redirect(url_for("estimate"))
