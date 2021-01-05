@@ -4,9 +4,10 @@ import os
 from flask import Flask, request, render_template, redirect, url_for, flash
 from werkzeug.utils import secure_filename
 
-from .wrangler import wrangle_image, predict
+from .wrangler import wrangle_image
+# , predict
 from .stuff import AMENITIES
-# from .models import DB, UserInput
+from .models import DB, UserInput
 # , MIGRATE
 
 
@@ -19,7 +20,7 @@ def create_app():
     app.config["SECRET_KEY"] = 'secret-key-goes-here'
     app.config["SQLALCHEMY_DATABASE_URI"] = os.getenv('DATABASE_URL')
     app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
-    # DB.init_app(app)
+    DB.init_app(app)
     # MIGRATE.init_app(app, DB)
 
     @app.route("/")
@@ -55,24 +56,23 @@ def create_app():
 
                 path = wrangle_image(orig_dir, new_dir)
 
-            # new_input = UserInput(amenities=amens, image=path)
-            # # TODO: view old submissions
-            # DB.drop_all()
-            # DB.create_all()
-            # DB.session.add(new_input)
-            # DB.session.commit()
+            new_input = UserInput(amenities=amens, image=path)
+            # TODO: view old submissions
+            DB.drop_all()
+            DB.create_all()
+            DB.session.add(new_input)
+            DB.session.commit()
 
         return redirect(url_for("estimate"))
 
     @app.route("/estimate")
     def estimate():
-        return 'good jb'
-        # data = UserInput.query.all()
-        # price = predict(data[0].image, data[0].amenities)
-        # message = f"{price}"
-        # amenities = data[0].amenities
+        data = UserInput.query.all()
+        price = predict(data[0].image, data[0].amenities)
+        message = f"{price}"
+        amenities = data[0].amenities
 
-        # return render_template("estimate.html", title="Estimate",
-        #                        message=message, amenities=amenities)
+        return render_template("estimate.html", title="Estimate",
+                               message=message, amenities=amenities)
 
     return app
