@@ -15,6 +15,6 @@ def wrangle_image(orig_dir, new_dir):
 
     new_name = 'im' + str(int(time()))[-5:] + '.jpg'
     io.imsave(os.path.join(new_dir, new_name), img_as_ubyte(image))
-    os.remove(orig_dir)
+    # os.remove(orig_dir)
 
     return new_name
