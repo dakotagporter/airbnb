@@ -8,6 +8,7 @@ from werkzeug.utils import secure_filename
 from .wrangler import wrangle_image
 
 DB = SQLAlchemy()
+USERDB = SQLAlchemy()
 
 
 def create_app():
@@ -27,7 +28,59 @@ def create_app():
 
     @app.route("/upload")
     def upload():
-        return render_template("upload.html", title="Upload")
+        AMENITIES = ['Wifi',
+                     'Smoke alarm',
+                     'Essentials',
+                     'Heating',
+                     'Air conditioning',
+                     'Kitchen',
+                     'Hangers',
+                     'TV',
+                     'Iron',
+                     'Washer',
+                     'Dryer',
+                     'Shampoo',
+                     'Carbon monoxide alarm',
+                     'Hair dryer',
+                     'Laptop-friendly workspace',
+                     'Hot water',
+                     'Fire extinguisher',
+                     'Refrigerator',
+                     'Microwave',
+                     'Dishes and silverware',
+                     'Coffee maker',
+                     'Private entrance',
+                     'Oven',
+                     'Stove',
+                     'Bed linens',
+                     'Cooking basics',
+                     'First aid kit',
+                     'Free street parking',
+                     'Dishwasher',
+                     'Extra pillows and blankets',
+                     'Long term stays allowed',
+                     'Cable TV',
+                     'Free parking on premises',
+                     'Patio or balcony',
+                     'Luggage dropoff allowed',
+                     'Lockbox',
+                     'Garden or backyard',
+                     'Keypad',
+                     'Elevator',
+                     'Gym',
+                     'Lock on bedroom door',
+                     'Bathtub',
+                     'BBQ grill',
+                     'Indoor fireplace',
+                     'Breakfast',
+                     'Shower gel',
+                     'Paid parking on premises',
+                     'Paid parking off premises',
+                     'Pool',
+                     'Pack \'n Play/travel crib']
+
+        return render_template("upload.html", title="Upload"
+                               amenities=AMENITIES)
 
     @app.route("/upload", methods=["POST"])
     def upload_post():
@@ -35,6 +88,8 @@ def create_app():
         Evaluate user input to return estimate.
         """
         if request.method == "POST":
+            amens = request.form["amenities"]
+
             img = request.files.get("file", False)
             if not img:
                 flash("Please provide an image")
@@ -47,17 +102,6 @@ def create_app():
                 new_dir = "images/resized/"
 
                 wrangle_image(orig_dir, new_dir)
-
-                filesystem_test = '<b>orig dir</b><br>'
-                for file in os.scandir(app.config["UPLOAD_FOLDER"]):
-                    filesystem_test = filesystem_test + file.name
-                filesystem_test = filesystem_test + '<br><b>re dir</b><br>'
-                for file in os.scandir('images/resized'):
-                    filesystem_test = filesystem_test + file.name
-                return filesystem_test
-
-                ##### TODO -- heroku has no filesystem. need to save images in database!
-                
 
         return redirect(url_for("estimate"))
 
