@@ -3,7 +3,7 @@ from time import time
 import numpy as np
 from skimage import io, img_as_ubyte, color
 from skimage.transform import resize
-# from tensorflow.keras.models import load_model
+from tensorflow.keras.models import load_model
 
 from .stuff import AMENITIES
 
