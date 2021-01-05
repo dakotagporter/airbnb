@@ -1,0 +1,1 @@
+web: gunicorn airbnb_app:APP -t 120
