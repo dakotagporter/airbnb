@@ -1,5 +1,13 @@
 {% extends "base.html" %}
 
 {% block content %}
-
+<aside class="">
+  <h2>Your Amenities:</h2>
+  {% for item in amenities %}
+  {{ item }}
+  {% endfor %}
+</aside>
+<section>
+  Hello
+</section>
 {% endblock %}
