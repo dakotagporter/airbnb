@@ -54,20 +54,19 @@ def create_app():
                 path = wrangle_image(orig_dir, new_dir)
 
             new_input = UserInput(amenities=amens, image=path)
-            os.remove(path)
 
+            DB.drop_all()
+            DB.create_all()
             DB.session.add(new_input)
             DB.session.commit()
 
         return redirect(url_for("estimate"))
 
     @app.route("/estimate")
-    def estimate(results=None):
-        if results:
-            amenities = UserInput.query.all()
-            message = f"Your amenities: {amenities}"
-        else:
-            message = "No results have been calculated yet!!"
+    def estimate():
+        data = UserInput.query.all()
+        price = predict(data[0].image, data[0].amenities)
+        message = f"{price}"
 
         return render_template("estimate.html", title="Estimate",
                                message=message)
