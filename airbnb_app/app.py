@@ -46,13 +46,15 @@ def create_app():
                 img.save(orig_dir)
                 new_dir = "images/resized/"
 
+                wrangle_image(orig_dir, new_dir)
+
                 filesystem_test = ''
                 for file in os.scandir('images/resized'):
                     filesystem_test = filesystem_test + file.name
                 return filesystem_test
 
                 ##### TODO -- heroku has no filesystem. need to save images in database!
-                # wrangle_image(orig_dir, new_dir)
+                
 
         return redirect(url_for("estimate"))
 
