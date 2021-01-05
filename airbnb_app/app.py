@@ -1,7 +1,7 @@
 """Main functions and routes for Airbnb app."""
 
 import os
-from flask import Flask, request, render_template, redirect, url_for
+from flask import Flask, request, render_template, redirect, url_for, flash
 from flask_sqlalchemy import SQLAlchemy
 from werkzeug.utils import secure_filename
 
@@ -16,6 +16,7 @@ def create_app():
 
     UPLOAD_FOLDER = "images/original/"
     app.config["UPLOAD_FOLDER"] = UPLOAD_FOLDER
+    app.config["SECRET_KEY"] = 'secret-key-goes-here'
     app.config["SQLALCHEMY_DATABASE_URI"] = os.getenv("DATABASE_URL")
     app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
     DB.init_app(app)
@@ -30,24 +31,32 @@ def create_app():
 
     @app.route("/upload", methods=["POST"])
     def upload_post():
+        """
+        Evaluate user input to return estimate.
+        """
         if request.method == "POST":
             img = request.files.get("file", False)
-            filename = secure_filename(img.filename)
-            orig_dir = os.path.join(app.config["UPLOAD_FOLDER"], str(filename))
-            img.save(orig_dir)
-            new_dir = "images/resized/"
-            wrangle_image(orig_dir, new_dir)
+            if not img:
+                flash("Please provide an image")
+                return redirect(url_for("upload"))
+            else:
+                filename = secure_filename(img.filename)
+                orig_dir = os.path.join(app.config["UPLOAD_FOLDER"],
+                                        str(filename))
+                img.save(orig_dir)
+                new_dir = "images/resized/"
+                wrangle_image(orig_dir, new_dir)
 
-        return redirect(url_for("prediction"))
+        return redirect(url_for("estimate"))
 
-    @app.route("/prediction")
+    @app.route("/estimate")
     def prediction(results=None):
         if results:
             message = "congrats"
         else:
             message = "No results have been calculated yet!!"
 
-        return render_template("prediction.html", title="Prediction",
+        return render_template("estimate.html", title="Estimate",
                                message=message)
 
     return app
