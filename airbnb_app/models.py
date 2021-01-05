@@ -1,7 +1,9 @@
 """Configure databases for AirBnB app."""
 from flask_sqlalchemy import SQLAlchemy
+from flask_migrate import Migrate
 
 DB = SQLAlchemy()
+MIGRATE = Migrate()
 
 
 class UserInput(DB.Model):

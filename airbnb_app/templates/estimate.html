@@ -3,6 +3,9 @@
 {% block content %}
 <div id="estimate">
   <h2>RESULTS:</h2>
+  {% for item in amenities %}
+  <p>{{ item }}</p>
+  {% endfor %}
   <p>{{ message }}</p>
 </div>
 {% endblock %}

@@ -6,7 +6,7 @@ from werkzeug.utils import secure_filename
 
 from .wrangler import wrangle_image, predict
 from .stuff import AMENITIES
-from .models import DB, UserInput
+from .models import DB, UserInput, MIGRATE
 
 
 def create_app():
@@ -19,6 +19,7 @@ def create_app():
     app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///db.sqlite3"
     app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
     DB.init_app(app)
+    MIGRATE.init_app(app, DB)
 
     @app.route("/")
     def root():
@@ -35,7 +36,7 @@ def create_app():
         Evaluate user input to return estimate.
         """
         if request.method == "POST":
-            amens = request.form.get("amenities")
+            amens = request.form.getlist("amenities")
             if not amens:
                 flash("Please select at least one amenity")
                 return redirect(url_for("upload"))
@@ -54,7 +55,7 @@ def create_app():
                 path = wrangle_image(orig_dir, new_dir)
 
             new_input = UserInput(amenities=amens, image=path)
-
+            #os.remove(path)
             DB.drop_all()
             DB.create_all()
             DB.session.add(new_input)
@@ -67,8 +68,9 @@ def create_app():
         data = UserInput.query.all()
         price = predict(data[0].image, data[0].amenities)
         message = f"{price}"
+        amenities = data[0].amenities
 
         return render_template("estimate.html", title="Estimate",
-                               message=message)
+                               message=message, amenities=amenities)
 
     return app
