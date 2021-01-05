@@ -7,8 +7,8 @@ from tensorflow.keras.models import load_model
 
 from .stuff import AMENITIES
 
-# model_path = 'savedmodel/savedmodel'
-# model = load_model(model_path)
+model_path = 'savedmodel/savedmodel'
+model = load_model(model_path)
 
 
 def wrangle_image(orig_dir, new_dir):
@@ -40,9 +40,9 @@ def encode_im(path):
     return np.array(image)/255
 
 
-# def predict(im_path, amens):
-#     im = np.expand_dims(encode_im(im_path), axis=0)
-#     am = np.expand_dims(encode_amens(amens), axis=0)
+def predict(im_path, amens):
+    im = np.expand_dims(encode_im(im_path), axis=0)
+    am = np.expand_dims(encode_amens(amens), axis=0)
 
-#     pred = model.predict([im, am])
-#     return '$' + str(pred[0][0].round(2))
+    pred = model.predict([im, am])
+    return '$' + str(pred[0][0].round(2))

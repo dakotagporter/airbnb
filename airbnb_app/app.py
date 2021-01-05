@@ -4,8 +4,7 @@ import os
 from flask import Flask, request, render_template, redirect, url_for, flash
 from werkzeug.utils import secure_filename
 
-from .wrangler import wrangle_image
-# , predict
+from .wrangler import wrangle_image, predict
 from .stuff import AMENITIES
 from .models import DB, UserInput
 # , MIGRATE
