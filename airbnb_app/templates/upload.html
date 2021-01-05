@@ -17,14 +17,16 @@
   </div>
   {% endif %}
   {% endwith %}
-  <form enctype='multipart/form-data' method="POST" action="/upload">
+  <form enctype='multipart/form-data' method="post" action="/upload">
       <div class="field">
-        <select name="amenities" multiple>
-            <option value="">--Please choose an option--</option>
-            {% for item in amenities %}
-            <option value="{{ item }}">{{ item }}</option>
-            {% endfor %}
-        </select>
+        <div class="control">
+          <select name="amenities" multiple>
+              <option value="">--Please choose an option--</option>
+              {% for item in amenities %}
+              <option value="{{ item }}">{{ item }}</option>
+              {% endfor %}
+          </select>
+        </div>
       </div>
 
       <div class="field">

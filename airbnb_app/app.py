@@ -88,10 +88,10 @@ def create_app():
         Evaluate user input to return estimate.
         """
         if request.method == "POST":
-            amens = request.form["amenities"]
-            if not amens:
-                flash("Select at least one amenity")
-                return redirect(url_for("upload"))
+            #amens = request.form["amenities"]
+            #if not amens:
+            #    flash("Select at least one amenity")
+            #    return redirect(url_for("upload"))
 
             img = request.files.get("file", False)
             if not img:
@@ -104,7 +104,9 @@ def create_app():
                 img.save(orig_dir)
                 new_dir = "images/resized/"
 
-                wrangle_image(orig_dir, new_dir)
+                new_name, image = wrangle_image(orig_dir, new_dir)
+                return new_name, image
+
 
         return redirect(url_for("estimate"))
 
