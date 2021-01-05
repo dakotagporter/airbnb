@@ -6,7 +6,8 @@ from werkzeug.utils import secure_filename
 
 from .wrangler import wrangle_image, predict
 from .stuff import AMENITIES
-from .models import DB, UserInput, MIGRATE
+from .models import DB, UserInput
+# , MIGRATE
 
 
 def create_app():
@@ -15,11 +16,11 @@ def create_app():
 
     UPLOAD_FOLDER = "images/original/"
     app.config["UPLOAD_FOLDER"] = UPLOAD_FOLDER
-    app.config["SECRET_KEY"] = 'secret-key-goes-here'
+    # app.config["SECRET_KEY"] = 'secret-key-goes-here'
     app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///db.sqlite3"
     app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
     DB.init_app(app)
-    MIGRATE.init_app(app, DB)
+    # MIGRATE.init_app(app, DB)
 
     @app.route("/")
     def root():
