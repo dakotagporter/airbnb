@@ -48,7 +48,10 @@ def create_app():
 
                 wrangle_image(orig_dir, new_dir)
 
-                filesystem_test = ''
+                filesystem_test = '<b>orig dir</b><br>'
+                for file in os.scandir(app.config["UPLOAD_FOLDER"]):
+                    filesystem_test = filesystem_test + file.name
+                filesystem_test = filesystem_test + '<br><b>re dir</b><br>'
                 for file in os.scandir('images/resized'):
                     filesystem_test = filesystem_test + file.name
                 return filesystem_test
