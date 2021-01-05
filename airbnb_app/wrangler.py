@@ -10,6 +10,7 @@ from .stuff import AMENITIES
 model_path = 'savedmodel/savedmodel'
 model = load_model(model_path)
 
+
 def wrangle_image(orig_dir, new_dir):
     image = resize(io.imread(orig_dir), (180, 240), mode='constant',
                    anti_aliasing=True)
@@ -32,6 +33,7 @@ def encode_amens(input_amens):
     for amen in AMENITIES:
         encoded.append(1 if amen in input_amens else 0)
     return np.array(encoded)
+
 
 def encode_im(path):
     image = io.imread(path)
