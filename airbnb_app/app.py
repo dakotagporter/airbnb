@@ -56,7 +56,7 @@ def create_app():
                 path = wrangle_image(orig_dir, new_dir)
 
             new_input = UserInput(amenities=amens, image=path)
-            #os.remove(path)
+            # TODO: view old submissions
             DB.drop_all()
             DB.create_all()
             DB.session.add(new_input)
