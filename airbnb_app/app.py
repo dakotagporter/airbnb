@@ -68,10 +68,9 @@ def create_app():
     def estimate():
         data = UserInput.query.all()
         price = predict(data[0].image, data[0].amenities)
-        message = f"{price}"
         amenities = data[0].amenities
 
         return render_template("estimate.html", title="Estimate",
-                               message=message, amenities=amenities)
+                               price=price, amenities=amenities)
 
     return app
