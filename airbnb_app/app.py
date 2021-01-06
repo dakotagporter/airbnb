@@ -37,9 +37,19 @@ def create_app():
         Evaluate user input to return estimate.
         """
         if request.method == "POST":
+            name = request.form.get("name")
+            if not name:
+                flash("Please provide a name for your property")
+                return redirect(url_for("upload"))
+
             amens = request.form.getlist("amenities")
             if not amens:
                 flash("Please select at least one amenity")
+                return redirect(url_for("upload"))
+
+            desc = request.form.get("description")
+            if not desc:
+                flash("Please provide a description for your property")
                 return redirect(url_for("upload"))
 
             img = request.files.get("file", False)
