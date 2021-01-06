@@ -1,6 +1,54 @@
 {% extends "base.html" %}
 
 {% block content %}
+<head>
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    /* Style the search field */
+    form.example input[type=text] {
+      padding: 10px;
+      font-size: 17px;
+      border: 1px solid grey;
+      float: left;
+      width: 25%;
+      background: #f1f1f1;
+    }
+
+    /* Style the submit button */
+    form.example button {
+      float: left;
+      width: 5%;
+      padding: 10px;
+      background: #2196F3;
+      color: white;
+      font-size: 17px;
+      border: 1px solid grey;
+      border-left: none; /* Prevent double borders */
+      cursor: pointer;
+    }
+
+    form.example button:hover {
+      background: #0b7dda;
+    }
+
+    /* Clear floats */
+    form.example::after {
+      content: "";
+      clear: both;
+      display: table;
+    }
+  </style>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+</head>
+
+<form class="example" action="/estimate" method="POST">
+  <input type="text" placeholder="Search properties by name.." name="search">
+  <button type="submit"><i class="fa fa-search"></i></button>
+</form>
+<br>
 <div class="box" style="margin:auto;">
   <h2><b>Your Amenities:</b></h2>
   {% for item in amenities %}
