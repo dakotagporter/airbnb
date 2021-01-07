@@ -6,7 +6,7 @@ from werkzeug.utils import secure_filename
 
 from .wrangler import wrangle_image, predict
 from .stuff import AMENITIES
-from .models import DB, UserInput
+from .models import DB, User, Property
 # , MIGRATE
 
 
@@ -17,7 +17,7 @@ def create_app():
     UPLOAD_FOLDER = "images/original/"
     app.config["UPLOAD_FOLDER"] = UPLOAD_FOLDER
     app.config["SECRET_KEY"] = 'secret-key-goes-here'
-    app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///db.sqlite3"#os.getenv('DATABASE_URL')
+    app.config["SQLALCHEMY_DATABASE_URI"] = os.getenv('DATABASE_URL')
     app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
     DB.init_app(app)
     # MIGRATE.init_app(app, DB)
@@ -70,19 +70,25 @@ def create_app():
 
                 path = wrangle_image(orig_dir, new_dir)
 
-            new_input = UserInput(email=email, name=name, amenities=amens, description=desc,
-                                  image=path)
-
-            DB.drop_all()
             DB.create_all()
+            user = (User.query.get(email)) or User(email=email)
+            DB.session.add(user)
+
+            new_input = Property(name=name,
+                                 amenities=amens,
+                                 description=desc,
+                                 image=path)
+
+            user.specs.append(new_input)
             DB.session.add(new_input)
+
             DB.session.commit()
 
         return redirect(url_for("estimate"))
 
     @app.route("/estimate")
     def estimate():
-        data = UserInput.query.all()
+        data = Property.query.all()
         price = predict(data[-1].image, data[-1].amenities)
         amenities = data[-1].amenities
 
@@ -93,9 +99,10 @@ def create_app():
     def estimate_post():
         if request.method == "POST":
             email = request.form.get("search")
-            data = UserInput.query.filter_by(email=str(email))
+            data = Property.query.filter_by(email_id=str(email))
             price = predict(data[0].image, data[0].amenities)
 
-        return render_template("estimate.html", title="Estimate", price=price, amenities=data[0].amenities)
+        return render_template("estimate.html", title="Estimate", price=price,
+                               amenities=data[0].amenities)
 
     return app
