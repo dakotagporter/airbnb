@@ -17,7 +17,7 @@ def create_app():
     UPLOAD_FOLDER = "images/original/"
     app.config["UPLOAD_FOLDER"] = UPLOAD_FOLDER
     app.config["SECRET_KEY"] = 'secret-key-goes-here'
-    app.config["SQLALCHEMY_DATABASE_URI"] = os.getenv('DATABASE_URL')
+    app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///db.sqlite3"#os.getenv('DATABASE_URL')
     app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
     DB.init_app(app)
     # MIGRATE.init_app(app, DB)
@@ -37,7 +37,11 @@ def create_app():
         Evaluate user input to return estimate.
         """
         if request.method == "POST":
-            return redirect(url_for("estimate"))
+            email = request.form.get("email")
+            if not email:
+                flash("Please provide an email address")
+                return redirect(url_for("upload"))
+
             name = request.form.get("name")
             if not name:
                 flash("Please provide a name for your property")
@@ -66,10 +70,10 @@ def create_app():
 
                 path = wrangle_image(orig_dir, new_dir)
 
-            new_input = UserInput(name=name, amenities=amens, description=desc,
+            new_input = UserInput(email=email, name=name, amenities=amens, description=desc,
                                   image=path)
 
-            #DB.drop_all()
+            DB.drop_all()
             DB.create_all()
             DB.session.add(new_input)
             DB.session.commit()
@@ -78,39 +82,9 @@ def create_app():
 
     @app.route("/estimate")
     def estimate():
-        name = request.form.get("name")
-        if not name:
-            flash("Please provide a name for your property")
-            return redirect(url_for("upload"))
-
-        amens = request.form.getlist("amenities")
-        if not amens:
-            flash("Please select at least one amenity")
-            return redirect(url_for("upload"))
-
-        desc = request.form.get("description")
-        if not desc:
-            flash("Please provide a description for your property")
-            return redirect(url_for("upload"))
-
-        img = request.files.get("file", False)
-        if not img:
-            flash("Please provide an image")
-            return redirect(url_for("upload"))
-        else:
-            filename = secure_filename(img.filename)
-            orig_dir = os.path.join(app.config["UPLOAD_FOLDER"],
-                                    str(filename))
-            new_dir = "images/resized/"
-            img.save(orig_dir)
-
-            path = wrangle_image(orig_dir, new_dir)
-
-        new_input = UserInput(name=name, amenities=amens, description=desc,
-                                  image=path)
-#        data = UserInput.query.all()
-#        price = predict(data[0].image, data[0].amenities)
-#        amenities = data[0].amenities
+        data = UserInput.query.all()
+        price = predict(data[-1].image, data[-1].amenities)
+        amenities = data[-1].amenities
 
         return render_template("estimate.html", title="Estimate",
                                price=price, amenities=amenities)
@@ -118,10 +92,10 @@ def create_app():
     @app.route("/estimate", methods=["POST"])
     def estimate_post():
         if request.method == "POST":
-            search = request.form.get("search")
-            data = UserInput.query.filter_by(name=str(search))
-            #price = predict(data.image, data.amenities)
+            email = request.form.get("search")
+            data = UserInput.query.filter_by(email=str(email))
+            price = predict(data[0].image, data[0].amenities)
 
-        return render_template("estimate.html", title="Estimate", price=price, amenities=data)
+        return render_template("estimate.html", title="Estimate", price=price, amenities=data[0].amenities)
 
     return app
