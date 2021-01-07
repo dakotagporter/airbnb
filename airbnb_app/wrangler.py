@@ -6,8 +6,9 @@ from skimage.transform import resize
 from tensorflow.keras.models import load_model
 
 from .stuff import AMENITIES
+from .tokenizer import text_to_dtm
 
-model_path = 'savedmodel/savedmodel'
+model_path = 'savedmodel'
 model = load_model(model_path)
 
 
@@ -40,9 +41,10 @@ def encode_im(path):
     return np.array(image)/255
 
 
-def predict(im_path, amens):
+def predict(im_path, desc, amens):
     im = np.expand_dims(encode_im(im_path), axis=0)
+    de = text_to_dtm(desc)
     am = np.expand_dims(encode_amens(amens), axis=0)
 
-    pred = model.predict([im, am])
+    pred = model.predict([im, de, am])
     return '$' + str(pred[0][0].round(2))
