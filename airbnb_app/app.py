@@ -17,7 +17,7 @@ def create_app():
     UPLOAD_FOLDER = "images/original/"
     app.config["UPLOAD_FOLDER"] = UPLOAD_FOLDER
     app.config["SECRET_KEY"] = 'secret-key-goes-here'
-    app.config["SQLALCHEMY_DATABASE_URI"] = os.getenv('DATABASE_URL')
+    app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///db.sqlite3"#os.getenv('DATABASE_URL')
     app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
     DB.init_app(app)
     # MIGRATE.init_app(app, DB)
