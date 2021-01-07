@@ -6,15 +6,22 @@ DB = SQLAlchemy()
 # MIGRATE = Migrate()
 
 
-class User(DB.Model):
-    email = DB.Column(DB.String(100), unique=True, nullable=False,
-                      primary_key=True)
-    specs = DB.relationship('Property', backref='user')
+# class User(DB.Model):
+#    id = DB.Column(DB.Integer, primary_key=True)
+#    email = DB.Column(DB.String(100), unique=True, nullable=False)
+#    property = DB.relationship('Property')
 
 
-class Property(DB.Model):
+# class Property(DB.Model):
+#    id = DB.Column(DB.Integer, primary_key=True)
+#    user_id = DB.Column(DB.String(100), DB.ForeignKey('user.id'))
+#    name = DB.Column(DB.String(100), nullable=False)
+#    amenities = DB.Column(DB.PickleType, nullable=False)
+#    description = DB.Column(DB.String(1000), nullable=False)
+#    image = DB.Column(DB.String(300), nullable=False)
+
+class UserInput(DB.Model):
     id = DB.Column(DB.Integer, primary_key=True)
-    email_id = DB.Column(DB.String(100), DB.ForeignKey('user.email'))
     name = DB.Column(DB.String(100), nullable=False)
     amenities = DB.Column(DB.PickleType, nullable=False)
     description = DB.Column(DB.String(1000), nullable=False)
