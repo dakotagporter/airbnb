@@ -43,19 +43,28 @@
   </style>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 </head>
-<!---<div class="box">
+<div class="box" style="width:33.3%; margin:left;">
+  {% with messages = get_flashed_messages() %}
+  {% if messages %}
+  <div class="notification is-danger">
+    {{ messages[0] }}.
+  </div>
+  {% endif %}
+  {% endwith %}
   <form class="example" action="/estimate" method="POST">
-    <b><big>Search you properties by email:</big></b>
+    <b><big>Search your properties by email:</big></b>
+    <br>
     <input type="text" placeholder="Enter your email.." name="search">
     <button type="submit"><i class="fa fa-search"></i></button>
   </form>
+  <br>
   {% for item in properties %}
-  {{ item }}
+  <a href="{{ url_for('estimate') }}">{{ item }}</a>
   {% endfor %}
-</div>--->
+</div>
 <br>
 <div class="box" style="margin:auto;">
-  <!---<img src="../..{{ image }}" alt="Property Image">--->
+  <img src="../..{{ image }}" alt="Property Image">
   <h2><b>Your Amenities:</b></h2>
   {% for item in amenities %}
   <br>{{ item }}

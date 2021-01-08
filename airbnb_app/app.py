@@ -6,8 +6,8 @@ from werkzeug.utils import secure_filename
 
 from .wrangler import wrangle_image, predict
 from .stuff import AMENITIES
-#from .models import DB, User, Property
-from .models import DB, UserInput
+from .models import DB, User, Property
+# from .models import DB, UserInput
 
 
 def create_app():
@@ -17,10 +17,9 @@ def create_app():
     UPLOAD_FOLDER = "images/original/"
     app.config["UPLOAD_FOLDER"] = UPLOAD_FOLDER
     app.config["SECRET_KEY"] = 'secret-key-goes-here'
-    app.config["SQLALCHEMY_DATABASE_URI"] = os.getenv('DATABASE_URL')
+    app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///db.sqlite3"#os.getenv('DATABASE_URL')
     app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
     DB.init_app(app)
-    # MIGRATE.init_app(app, DB)
 
     @app.route("/")
     def root():
@@ -37,10 +36,10 @@ def create_app():
         Evaluate user input to return estimate.
         """
         if request.method == "POST":
-#            email = request.form.get("email")
-#            if not email:
-#                flash("Please provide an email address")
-#                return redirect(url_for("upload"))
+            email = request.form.get("email")
+            if not email:
+                flash("Please provide an email address")
+                return redirect(url_for("upload"))
 
             name = request.form.get("name")
             if not name:
@@ -70,53 +69,50 @@ def create_app():
 
                 path = wrangle_image(orig_dir, new_dir)
 
+            price = predict(img, desc, amens)
+
             DB.create_all()
-            # user = (User.query.get(email)) or User(email=email)
-            # DB.session.add(user)
+            user = (User.query.get(email)) or User(id=email)
+            DB.session.add(user)
 
-            # new_input = Property(name=name,
-            #                     amenities=amens,
-            #                     description=desc,
-            #                     image=path)
+            new_input = Property(user_id=email,
+                                 name=name,
+                                 amenities=amens,
+                                 description=desc,
+                                 image=path,
+                                 price=price)
 
-            new_input = UserInput(name=name,
-                                  amenities=amens,
-                                  description=desc,
-                                  image=path)
-
-            # User.property.append(new_input)
             DB.session.add(new_input)
 
             DB.session.commit()
 
-        return redirect(url_for("estimate"))
+        return redirect(url_for("upload"))
 
     @app.route("/estimate")
     def estimate():
-        data = UserInput.query.all()
-        price = predict(data[-1].image, data[-1].description, data[-1].amenities)
-        amenities = data[-1].amenities
-        image = data[-1].image
-        desc = data[-1].description
-
         return render_template("estimate.html", title="Estimate",
                                price=price, amenities=amenities,
                                image=image, description=desc)
 
-    # @app.route("/estimate", methods=["POST"])
-    # def estimate_post():
-    #    if request.method == "POST":
-    #        email = request.form.get("search")
-    #        user = User.query.filter(email=email).all()
-    #        if len(properties) > 1:
-    #            names = []
-    #            for property in properties:
-    #                names.append(property.name)
-    #            return render_template("estimate.html", title="Estimate",
-    #                                   properties=names)
-    #        price = predict(data[0].image, data[0].amenities)
-#
-#        return render_template("estimate.html", title="Estimate", price=price,
-#                               amenities=data[0].amenities)
-#
+    @app.route("/estimate", methods=["POST"])
+    def estimate_post():
+        if request.method == "POST":
+            email = request.form.get("search")
+            user = User.query.get(email)
+            if user:
+                properties = user.property
+                if len(properties) > 1:
+                    names = []
+                    for property in properties:
+                        names.append(property.name)
+                    return render_template("estimate.html", title="Estimate",
+                                           properties=names)
+            #price = predict(data[0].image, data[0].amenities)
+            else:
+                flash("Email does not exist")
+                return redirect(url_for("estimate"))
+
+        return render_template("estimate.html", title="Estimate", price=properties,
+                               amenities="")
+
     return app
