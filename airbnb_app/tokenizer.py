@@ -5,10 +5,10 @@ import numpy as np
 import nltk
 from nltk.tokenize.toktok import ToktokTokenizer
 from bs4 import BeautifulSoup
-import spacy
+# import spacy
 from .stuff import CONTRACTION_MAP
 
-nlp = spacy.load('en_core_web_md')
+# nlp = spacy.load('en_core_web_md')
 stopword_list = pickle.load(open('stopwords.pickle', 'rb'))
 tokenizer = ToktokTokenizer()
 vectorizer = pickle.load(open('vectorizer.pickle', 'rb'))
@@ -58,10 +58,10 @@ def simple_stemmer(text):
     text = ' '.join([ps.stem(word) for word in text.split()])
     return text
 
-def lemmatize_text(text):
-    text = nlp(text)
-    text = ' '.join([word.lemma_ if word.lemma_ != '-PRON-' else word.text for word in text])
-    return text
+# def lemmatize_text(text):
+#     text = nlp(text)
+#     text = ' '.join([word.lemma_ if word.lemma_ != '-PRON-' else word.text for word in text])
+#     return text
 
 def remove_stopwords(text, is_lower_case=False):
     tokens = tokenizer.tokenize(text)
@@ -97,8 +97,8 @@ def normalize_corpus(corpus, html_stripping=True, contraction_expansion=True,
         # remove extra newlines
         doc = re.sub(r'[\r|\n|\r\n]+', ' ',doc)
         # lemmatize text
-        if text_lemmatization:
-            doc = lemmatize_text(doc)
+        # if text_lemmatization:
+        #     doc = lemmatize_text(doc)
         # remove special characters and\or digits    
         if special_char_removal:
             # insert spaces between special characters to isolate them    
