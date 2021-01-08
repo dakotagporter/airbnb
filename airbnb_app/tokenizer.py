@@ -1,9 +1,10 @@
 import re
 import pickle
 import unicodedata
-import numpy as np
-import nltk
+# import numpy as np
+# import nltk
 from nltk.tokenize.toktok import ToktokTokenizer
+from nltk import PorterStemmer
 from bs4 import BeautifulSoup
 # import spacy
 from .stuff import CONTRACTION_MAP
@@ -54,7 +55,7 @@ def remove_special_characters(text, remove_digits=False):
     return text
 
 def simple_stemmer(text):
-    ps = nltk.porter.PorterStemmer()
+    ps = PorterStemmer()
     text = ' '.join([ps.stem(word) for word in text.split()])
     return text
 
