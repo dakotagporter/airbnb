@@ -69,7 +69,7 @@ def create_app():
 
                 path = wrangle_image(orig_dir, new_dir)
 
-            price = predict(img, desc, amens)
+            price = predict(path, desc, amens)
 
             DB.create_all()
             user = (User.query.get(email)) or User(id=email)
@@ -86,19 +86,22 @@ def create_app():
 
             DB.session.commit()
 
-        return redirect(url_for("upload"))
+        return render_template("upload.html", price=price)
 
     @app.route("/estimate")
     def estimate():
-        return render_template("estimate.html", title="Estimate",
-                               price=price, amenities=amenities,
-                               image=image, description=desc)
+        return render_template("estimate.html", title="Estimate")
 
     @app.route("/estimate", methods=["POST"])
     def estimate_post():
-        if request.method == "POST":
-            email = request.form.get("search")
-            user = User.query.get(email)
+        email = request.form.get("search")
+        user = User.query.get(email)
+        property = request.form.get("property")
+        if request.method == "POST" and user:
+            #email = request.form.get("search")
+            #property_select = request.form.get("property")
+            #user = User.query.get(email)
+
             if user:
                 properties = user.property
                 if len(properties) > 1:
@@ -107,12 +110,14 @@ def create_app():
                         names.append(property.name)
                     return render_template("estimate.html", title="Estimate",
                                            properties=names)
-            #price = predict(data[0].image, data[0].amenities)
             else:
                 flash("Email does not exist")
                 return redirect(url_for("estimate"))
 
-        return render_template("estimate.html", title="Estimate", price=properties,
+        if request.method == "POST" and property:
+            if property:
+
+                return render_template("estimate.html", title="Estimate", price=properties,
                                amenities="")
 
     return app

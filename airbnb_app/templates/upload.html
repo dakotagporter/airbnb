@@ -17,6 +17,10 @@
   </div>
   {% endif %}
   {% endwith %}
+  <div class="box" style="width:33%; margin:auto; background-color:#00FF00;">
+    <h1><b>Your Estimate: {{ price }}</b></h1> <!---two decimal places--->
+  </div>
+  <br>
   <form enctype='multipart/form-data' method="POST" action="/upload">
       <div class="field">
           <div class="control">

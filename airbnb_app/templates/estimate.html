@@ -12,21 +12,20 @@
       padding: 10px;
       font-size: 17px;
       border: 1px solid grey;
-      float: left;
-      width: 25%;
+      margin: auto;
+      width: 50%;
       background: #f1f1f1;
     }
 
     /* Style the submit button */
     form.example button {
-      float: left;
-      width: 5%;
+      margin: auto;
+      width: 12%;
       padding: 10px;
       background: #2196F3;
       color: white;
       font-size: 17px;
       border: 1px solid grey;
-      border-left: none; /* Prevent double borders */
       cursor: pointer;
     }
 
@@ -43,7 +42,7 @@
   </style>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 </head>
-<div class="box" style="width:33.3%; margin:left;">
+<div class="box" style="width:33.3%; margin:auto;">
   {% with messages = get_flashed_messages() %}
   {% if messages %}
   <div class="notification is-danger">
@@ -58,9 +57,14 @@
     <button type="submit"><i class="fa fa-search"></i></button>
   </form>
   <br>
-  {% for item in properties %}
-  <a href="{{ url_for('estimate') }}">{{ item }}</a>
-  {% endfor %}
+  <form class="example" action="/estimate" method="POST">
+    <select>
+      {% for item in properties %}
+      <option value="{{ item }}" name="property" style="color:blue">{{ item }}</option>
+      {% endfor %}
+    </select>
+    <input type="submit" name="select" value="Select">
+  </form>
 </div>
 <br>
 <div class="box" style="margin:auto;">
