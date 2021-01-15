@@ -7,7 +7,45 @@
       width: 100%;
       height: 200px;
   }
+
+  * {
+    box-sizing: border-box;
+  }
+
+  /* Style the search field */
+  form.example input[type=text] {
+    padding: 10px;
+    font-size: 17px;
+    border: 1px solid grey;
+    margin: auto;
+    width: 50%;
+    background: #f1f1f1;
+  }
+
+  /* Style the submit button */
+  form.example button {
+    margin: auto;
+    width: 12%;
+    padding: 10px;
+    background: #2196F3;
+    color: white;
+    font-size: 17px;
+    border: 1px solid grey;
+    cursor: pointer;
+  }
+
+  form.example button:hover {
+    background: #0b7dda;
+  }
+
+  /* Clear floats */
+  form.example::after {
+    content: "";
+    clear: both;
+    display: table;
+  }
   </style>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 </head>
 <div class="box" style="width:66.6%; margin:auto;">
   {% with messages = get_flashed_messages() %}
@@ -65,6 +103,15 @@
       </div>
 
       <button class="button is-block is-info is-large is-fullwidth">Upload</button>
+  </form>
+</div>
+<br>
+<div class="box" style="width:66.6%; margin:auto;">
+  <form class="example" action="/listings" method="POST">
+    <b><big>Search your properties by email:</big></b>
+    <br>
+    <input type="text" placeholder="Enter your email.." name="search">
+    <button type="submit"><i class="fa fa-search"></i></button>
   </form>
 </div>
 {% endblock %}

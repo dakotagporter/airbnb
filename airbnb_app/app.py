@@ -87,36 +87,20 @@ def create_app():
 
         return render_template("upload.html", price=price)
 
-    @app.route("/estimate")
-    def estimate():
-        return render_template("estimate.html", title="Estimate")
-
-    @app.route("/estimate", methods=["POST"])
-    def estimate_post():
+    @app.route("/listings", methods=["POST"])
+    def search_post():
         email = request.form.get("search")
         user = User.query.get(email)
-        property = request.form.get("property")
-        if request.method == "POST" and user:
-            # email = request.form.get("search")
-            # property_select = request.form.get("property")
-            # user = User.query.get(email)
-
-            if user:
-                properties = user.property
-                if len(properties) > 1:
-                    names = []
-                    for property in properties:
-                        names.append(property.name)
-                    return render_template("estimate.html", title="Estimate",
-                                           properties=names)
-            else:
-                flash("Email does not exist")
-                return redirect(url_for("estimate"))
-
-        if request.method == "POST" and property:
-            if property:
-
-                return render_template("estimate.html", title="Estimate", price=properties,
-                               amenities="")
+        if user:
+            properties = user.property
+            if len(properties) >= 1:
+                names = []
+                for property in properties:
+                    names.append(property.name)
+                return render_template("listings.html", title="Listings",
+                                       properties=names)
+        else:
+            return render_template("listings.html", title="Listings",
+                                   properties="", email=email)
 
     return app
