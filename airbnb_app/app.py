@@ -88,19 +88,24 @@ def create_app():
         return render_template("upload.html", price=price)
 
     @app.route("/listings", methods=["POST"])
+    @app.route("/listings/<property_name>", methods=["GET"])
     def search_post():
-        email = request.form.get("search")
-        user = User.query.get(email)
-        if user:
-            properties = user.property
-            if len(properties) >= 1:
-                names = []
-                for property in properties:
-                    names.append(property.name)
+        if request.method == "POST":
+            email = request.form.get("search")
+            user = User.query.get(email)
+            if user:
+                properties = user.property
+                if len(properties) >= 1:
+                    names = []
+                    for property in properties:
+                        names.append(property.name)
+                    return render_template("listings.html", title="Listings",
+                                           properties=names)
+            else:
                 return render_template("listings.html", title="Listings",
-                                       properties=names)
+                                       properties="", email=email)
+
         else:
-            return render_template("listings.html", title="Listings",
-                                   properties="", email=email)
+
 
     return app

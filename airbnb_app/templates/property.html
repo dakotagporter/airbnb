@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="box" style="margin:auto;">
+  <img src="../..{{ image }}" alt="Property Image">
+  <h2><b>Your Amenities:</b></h2>
+  {% for item in amenities %}
+  <br>{{ item }}
+  {% endfor %}
+  <h2><b>Description:</b></h2>
+  <br>{{ description }}
+</div>
+<br>
+<div class="box" style="width:33%; margin:auto; background-color:#00FF00;">
+  <h1><b>Your Estimate: {{ price }}</b></h1> <!---two decimal places--->
+</div>
+{% endblock %}
