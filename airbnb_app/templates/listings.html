@@ -7,8 +7,8 @@
 </div>
 {% endif %}
 <div class="box">
-  {% for property in properties %}
-  <a href="/listings/{{ name }}" style="color:blue">{{ property }}</big>
+  {% for property in user.property %}
+  <a href="/listings/{{ email }}/{{ property.name }}" style="color:blue">{{ property.name }}</big>
   <br>
   {% endfor %}
 </div>

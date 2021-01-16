@@ -64,7 +64,9 @@ def create_app():
                 orig_dir = os.path.join(app.config["UPLOAD_FOLDER"],
                                         str(filename))
                 new_dir = "images/resized/"
+                static_dir = "static/"
                 img.save(orig_dir)
+                img.save(static_dir)
 
                 path = wrangle_image(orig_dir, new_dir)
 
@@ -78,7 +80,7 @@ def create_app():
                                  name=name,
                                  amenities=amens,
                                  description=desc,
-                                 image=path,
+                                 image=filename, ##
                                  price=price)
 
             DB.session.add(new_input)
@@ -88,24 +90,23 @@ def create_app():
         return render_template("upload.html", price=price)
 
     @app.route("/listings", methods=["POST"])
-    @app.route("/listings/<property_name>", methods=["GET"])
-    def search_post():
-        if request.method == "POST":
-            email = request.form.get("search")
+    @app.route("/listings/<email>/<property_name>", methods=["GET"])
+    def search_post(email=None, property_name=None):
+        if request.method == "GET":
             user = User.query.get(email)
-            if user:
-                properties = user.property
-                if len(properties) >= 1:
-                    names = []
-                    for property in properties:
-                        names.append(property.name)
-                    return render_template("listings.html", title="Listings",
-                                           properties=names)
-            else:
-                return render_template("listings.html", title="Listings",
-                                       properties="", email=email)
-
+            properties = user.property
+            for property in properties:
+                if property.name == property_name:
+                    return render_template("property.html", title="Listing",
+                                           property=property)
+            return str(user.property.name == property_name)
+        email = request.form.get("search")
+        user = User.query.get(email)
+        if user:
+            return render_template("listings.html", title="Listings",
+                                   user=user, email=email)
         else:
-
+            return render_template("listings.html", title="Listings",
+                                   properties="", email=email)
 
     return app
