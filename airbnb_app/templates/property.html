@@ -4,7 +4,7 @@
 <div class="box" style="margin:auto;">
   <h1><big><b>{{ property.name }}</b></big></h1>
   <br>
-  <img src="{{ url_for('static', filename='{{ property.image }}') }}" alt="Property Image {{ property.image }}">
+  <img src="/static/images/{{ property.image }}" alt="Property Image">
   <h2><b>Your Amenities:</b></h2>
   {% for item in property.amenities %}
   <br>{{ item }}
@@ -17,3 +17,4 @@
   <h1><b>Your Estimate: {{ property.price }}</b></h1> <!---two decimal places--->
 </div>
 {% endblock %}
+<!---{{ url_for('static', filename=property.image) }}--->

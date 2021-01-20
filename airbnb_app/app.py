@@ -13,7 +13,7 @@ def create_app():
     """Construct app and it's routes."""
     app = Flask(__name__)
 
-    UPLOAD_FOLDER = "images/original/"
+    UPLOAD_FOLDER = "airbnb_app/static/images/"
     app.config["UPLOAD_FOLDER"] = UPLOAD_FOLDER
     app.config["SECRET_KEY"] = 'secret-key-goes-here'
     app.config["SQLALCHEMY_DATABASE_URI"] = os.getenv('DATABASE_URL')
@@ -64,9 +64,7 @@ def create_app():
                 orig_dir = os.path.join(app.config["UPLOAD_FOLDER"],
                                         str(filename))
                 new_dir = "images/resized/"
-                static_dir = "static/"
                 img.save(orig_dir)
-                img.save(static_dir)
 
                 path = wrangle_image(orig_dir, new_dir)
 
